@@ -161,23 +161,16 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		# Passes if no valid moves.
     		self.response.write("PASS")
     	else:
-    		# Chooses a valid move randomly if available.
-                # TO STEP STUDENTS:
-                # You'll probably want to change how this works, to do something
-                # more clever than just picking a random move.
-                
-	    	#move = random.choice(valid_moves)
-    		#self.response.write(PrettyMove(move))
-    		
-    		aite = []
-    		jibun = []
-    		moves = []
+    		# Choose next move
+    		aite, jibun, moves = [], [], []
     		valid_moves = rearrange(valid_moves, "max")
+    		
     		for move in valid_moves:
     		    nextboard = g.NextBoardPosition(move)
     		    aitemoves = nextboard.ValidMoves()
     		    aite.append(len(aitemoves))
     		    possibilities = []
+    		    
     		    aitemoves = rearrange(aitemoves, "min")
     		    for mov in aitemoves:
     		        jibunmoves = nextboard.NextBoardPosition(mov).ValidMoves()
