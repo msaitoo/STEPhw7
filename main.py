@@ -6,6 +6,8 @@ import json
 import logging
 import random
 import webapp2
+import time
+from compare import rearrange
 
 # Reads json description of the board and provides simple interface.
 class Game:
@@ -170,18 +172,24 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		aite = []
     		jibun = []
     		moves = []
+    		valid_moves = rearrange(valid_moves, "max")
     		for move in valid_moves:
     		    nextboard = g.NextBoardPosition(move)
     		    aitemoves = nextboard.ValidMoves()
     		    aite.append(len(aitemoves))
     		    possibilities = []
+    		    aitemoves = rearrange(aitemoves, "min")
     		    for mov in aitemoves:
     		        jibunmoves = nextboard.NextBoardPosition(mov).ValidMoves()
     		        #self.response.write(jibunmoves)
     		        possibilities.append(len(jibunmoves))
     		        moves.append(len(jibunmoves))
-    		    jibun.append(max(possibilities))
-                
+    		    #self.response.write(possibilities)
+    		    try:
+    		        jibun.append(max(possibilities))
+    		    except ValueError:
+    		        jibun.append(0)
+    		    
     		points = []
     		for i in range(len(valid_moves)):
     		    eachpoint = 0
@@ -201,8 +209,8 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		#nextboard = g.NextBoardPosition(valid_moves[0])
     		#tsugi = nextboard.ValidMoves()
     		
-    		
     		self.response.write(PrettyMove(move))
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
