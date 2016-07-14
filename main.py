@@ -164,7 +164,7 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		# Choose next move
     		aite, jibun, moves = [], [], []
     		valid_moves = rearrange(valid_moves, "max")
-    		
+    		#self.response.write(valid_moves)
     		for move in valid_moves:
     		    nextboard = g.NextBoardPosition(move)
     		    aitemoves = nextboard.ValidMoves()
@@ -186,16 +186,25 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		points = []
     		for i in range(len(valid_moves)):
     		    eachpoint = 0
-    		    if aite[i] == min(aite):
-    		        eachpoint += 10
-    		    if jibun[i] == max(jibun):
-    		        eachpoint += 5
+    		    
+    		    if aite[i] == 0:
+    		        eachpoint += 20
+    		    else:
+    		        eachpoint -= aite[i]*2
+    		    if jibun[i] == 0:
+    		        eachpoint -= 30
+    		    else:
+    		        eachpoint += jibun[i]*2
     		    if PrettyMove(valid_moves[i])[0] == 'B' or PrettyMove(valid_moves[i])[0] == 'G':
-    		        eachpoint -= 10
+    		        eachpoint -= 5
     		    if PrettyMove(valid_moves[i])[1] == '2' or PrettyMove(valid_moves[i])[1] == '7':
-    		        eachpoint -= 10    		    
+    		        eachpoint -= 5
+    		    if PrettyMove(valid_moves[i])[0] == 'A' or PrettyMove(valid_moves[i])[0] == 'H':
+    		        eachpoint += 5
+    		    if PrettyMove(valid_moves[i])[1] == '1' or PrettyMove(valid_moves[i])[1] == '8':
+    		        eachpoint += 5 
     		    points.append([eachpoint])
-    		
+    		#self.response.write(jibun)
     		index = points.index(max(points))
     		move = valid_moves[index]
     		
