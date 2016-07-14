@@ -7,7 +7,7 @@ import logging
 import random
 import webapp2
 from compare import rearrange
-from compare import points
+from compare import givepoints
 
 # Reads json description of the board and provides simple interface.
 class Game:
@@ -170,7 +170,8 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		    nextboard = g.NextBoardPosition(move)         #Simulate each move
     		    aitemoves = nextboard.ValidMoves()            #Opponent's valid moves
     		    aite.append(len(aitemoves))
-    		    aitemoves = rearrange(aitemoves, "min")       #Narrow down possible opponent's move
+    		    
+    		    aitemoves = rearrange(aitemoves, "min")       #Narrow down possible opponent's moves
     		    
     		    possibilities = []                            #Store number of valid moves for my next move
     		    for mov in aitemoves:
@@ -181,7 +182,7 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		    except ValueError:
     		        jibun.append(0)
     		    
-    		points = []                                       #Give points to each initial choices of moves
+    		points = []                                       #Give points to each moves
     		for i in range(len(valid_moves)):
     		    eachpoint = 0
     		    
@@ -193,18 +194,12 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		        eachpoint -= 30
     		    else:
     		        eachpoint += jibun[i]*2
-    		    if PrettyMove(valid_moves[i])[0] == 'B' or PrettyMove(valid_moves[i])[0] == 'G':
-    		        eachpoint -= 5
-    		    if PrettyMove(valid_moves[i])[1] == '2' or PrettyMove(valid_moves[i])[1] == '7':
-    		        eachpoint -= 5
-    		    if PrettyMove(valid_moves[i])[0] == 'A' or PrettyMove(valid_moves[i])[0] == 'H':
-    		        eachpoint += 5
-    		    if PrettyMove(valid_moves[i])[1] == '1' or PrettyMove(valid_moves[i])[1] == '8':
-    		        eachpoint += 5 
+    		      
+    		    eachpoint += givepoints(valid_moves[i])
     		    points.append([eachpoint])
                     
     		index = points.index(max(points))                 #Choose the move with most points
-    		move = valid_moves[index]
+    		move  = valid_moves[index]
     		
     		self.response.write(PrettyMove(move))
 
