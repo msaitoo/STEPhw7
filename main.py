@@ -6,8 +6,8 @@ import json
 import logging
 import random
 import webapp2
-import time
 from compare import rearrange
+from compare import points
 
 # Reads json description of the board and provides simple interface.
 class Game:
@@ -162,28 +162,26 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		self.response.write("PASS")
     	else:
     		# Choose next move
-    		aite, jibun, moves = [], [], []
-    		valid_moves = rearrange(valid_moves, "max")
-    		#self.response.write(valid_moves)
+    		#Store numbers of valid moves for opponent and myself
+    		aite, jibun= [], []
+    		valid_moves = rearrange(valid_moves, "max")       #Narrow down possible next move
+    		
     		for move in valid_moves:
-    		    nextboard = g.NextBoardPosition(move)
-    		    aitemoves = nextboard.ValidMoves()
+    		    nextboard = g.NextBoardPosition(move)         #Simulate each move
+    		    aitemoves = nextboard.ValidMoves()            #Opponent's valid moves
     		    aite.append(len(aitemoves))
-    		    possibilities = []
+    		    aitemoves = rearrange(aitemoves, "min")       #Narrow down possible opponent's move
     		    
-    		    aitemoves = rearrange(aitemoves, "min")
+    		    possibilities = []                            #Store number of valid moves for my next move
     		    for mov in aitemoves:
-    		        jibunmoves = nextboard.NextBoardPosition(mov).ValidMoves()
-    		        #self.response.write(jibunmoves)
+    		        jibunmoves = nextboard.NextBoardPosition(mov).ValidMoves() #Simulate each move
     		        possibilities.append(len(jibunmoves))
-    		        moves.append(len(jibunmoves))
-    		    #self.response.write(possibilities)
     		    try:
-    		        jibun.append(max(possibilities))
+    		        jibun.append(max(possibilities))          #Conside good results
     		    except ValueError:
     		        jibun.append(0)
     		    
-    		points = []
+    		points = []                                       #Give points to each initial choices of moves
     		for i in range(len(valid_moves)):
     		    eachpoint = 0
     		    
@@ -204,12 +202,9 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		    if PrettyMove(valid_moves[i])[1] == '1' or PrettyMove(valid_moves[i])[1] == '8':
     		        eachpoint += 5 
     		    points.append([eachpoint])
-    		#self.response.write(jibun)
-    		index = points.index(max(points))
+                    
+    		index = points.index(max(points))                 #Choose the move with most points
     		move = valid_moves[index]
-    		
-    		#nextboard = g.NextBoardPosition(valid_moves[0])
-    		#tsugi = nextboard.ValidMoves()
     		
     		self.response.write(PrettyMove(move))
 
