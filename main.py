@@ -170,7 +170,6 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		    nextboard = g.NextBoardPosition(move)         #Simulate each move
     		    aitemoves = nextboard.ValidMoves()            #Opponent's valid moves
     		    aite.append(len(aitemoves))
-    		    
     		    aitemoves = rearrange(aitemoves, "min")       #Narrow down possible opponent's moves
     		    
     		    possibilities = []                            #Store number of valid moves for my next move
@@ -202,7 +201,6 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
     		move  = valid_moves[index]
     		
     		self.response.write(PrettyMove(move))
-
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)

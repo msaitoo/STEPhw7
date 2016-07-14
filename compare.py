@@ -20,7 +20,6 @@ def rearrange(moves, minmax):
     if len(moves) > 5:
         for i in moves:
             point.append(givepoints(i))
-        #print point
         while len(new_moves) < 5:
             if minmax == "max":
                 index = point.index(max(point))
