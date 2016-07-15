@@ -4,11 +4,11 @@ def givepoints(move):
     point = 0
     move = move["Where"]
     if move[0] == 2 or move[0] == 7:
-        point -= 5
+        point -= 10
     elif move[0] == 1 or move[0] == 8:
         point += 5
     if move[1] == 2 or move[1] == 7:
-        point -= 5
+        point -= 10
     elif move[1] == 1 or move[1] == 8:
         point += 5
     return point
