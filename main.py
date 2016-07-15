@@ -19,7 +19,7 @@ class Game:
                 else:
                         self._board = board
                 
-
+        
 	# Returns piece on the board.
 	# 0 for no pieces, 1 for player 1, 2 for player 2.
 	# None for coordinate out of scope.
